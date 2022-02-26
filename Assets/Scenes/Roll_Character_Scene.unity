@@ -802,7 +802,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34c7da400aaf2403897c77d4334f047a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ValueTxt: {fileID: 0}
   BackButton: {fileID: 0}
 --- !u!4 &269022488
 Transform:
@@ -1017,7 +1016,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34c7da400aaf2403897c77d4334f047a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ValueTxt: {fileID: 0}
   BackButton: {fileID: 0}
 --- !u!1 &410091289
 GameObject:
@@ -2144,7 +2142,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1786a0851ade74e02ac01af37eb41cab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Value: {fileID: 0}
+  strengthVal: 0
+  dexterityVal: 0
+  constitutionVal: 0
+  intelligenceVal: 0
+  wisdomVal: 0
+  charismaVal: 0
 --- !u!4 &941468108
 Transform:
   m_ObjectHideFlags: 0

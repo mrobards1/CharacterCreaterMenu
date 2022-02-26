@@ -9,22 +9,28 @@ public class Singleton : MonoBehaviour
 
     public static Singleton Instance { get; private set; }
 
-    public Button Value;
+    public int strengthVal;
+    public int dexterityVal;
+    public int constitutionVal;
+    public int intelligenceVal;
+    public int wisdomVal;
+    public int charismaVal;
+    
 
     private void Awake()
     {
-        if (Instance == null)
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            
+        }
+        else
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
-        else
-        {
-            Destroy(gameObject);
-        }
     }
 
-    
-
+   
     
 }

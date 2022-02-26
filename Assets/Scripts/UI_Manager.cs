@@ -6,12 +6,11 @@ using UnityEngine.SceneManagement;
 
 public class UI_Manager : MonoBehaviour
 {
-
-    public Text ValueTxt;
+    
 
     private Button Button_Quit;
 
-    public Button BackButton;
+    
 
     private Text T_Out_Strength;
     private Button Button_Strength_Roll;
@@ -37,10 +36,21 @@ public class UI_Manager : MonoBehaviour
     private Button Button_Charisma_Roll;
     private Text T_Out_Mod_Cha;
 
-    void Start()
+    int mod_Strength;
+    int mod_Dexterity;
+    int mod_Constitution;
+    int mod_Intelligence;
+    int mod_Wisdom;
+    int mod_Charisma;
+
+    public void Start()
     {
         UIReferences();
+        
+
     }
+
+    
 
     public void UIReferences()
     {
@@ -49,11 +59,13 @@ public class UI_Manager : MonoBehaviour
         Button_Strength_Roll = GameObject.Find("Button_Strength_Roll").GetComponent<Button>();
         T_Out_Mod_Str = GameObject.Find("T_Out_Mod_Str").GetComponent<Text>();
         Button_Strength_Roll.onClick.AddListener(CallBack_Strength);
+        
 
         T_Out_Dexterity = GameObject.Find("T_Out_Dexterity").GetComponent<Text>();
         Button_Dexterity_Roll = GameObject.Find("Button_Dexterity_Roll").GetComponent<Button>();
         Button_Dexterity_Roll.onClick.AddListener(CallBack_Dexterity);
         T_Out_Mod_Dex = GameObject.Find("T_Out_Mod_Dex").GetComponent<Text>();
+        
 
         T_Out_Constitution = GameObject.Find("T_Out_Constitution").GetComponent<Text>();
         Button_Constitution_Roll = GameObject.Find("Button_Constitution_Roll").GetComponent<Button>();
@@ -77,6 +89,8 @@ public class UI_Manager : MonoBehaviour
 
         Button_Quit = GameObject.Find("Button_Quit").GetComponent<Button>();
         Button_Quit.onClick.AddListener(QuitGame);
+
+       
     }
 
    public void SceneSwitch(int sceneNum)
@@ -141,48 +155,57 @@ public class UI_Manager : MonoBehaviour
     {
         int strength = Dice_Simulator();
         T_Out_Strength.text = strength.ToString();
-        int mod_Strength = strength + 2;
+        mod_Strength = strength + 2;
         T_Out_Mod_Str.text = mod_Strength.ToString();
+        Singleton.Instance.strengthVal = mod_Strength;
     }
+
+    
+   
 
     public void CallBack_Dexterity()
     {
         int dexterity = Dice_Simulator();
         T_Out_Dexterity.text = dexterity.ToString();
-        int mod_Dexterity = dexterity + 2;
+        mod_Dexterity = dexterity + 2;
         T_Out_Mod_Dex.text = mod_Dexterity.ToString();
+        Singleton.Instance.dexterityVal = mod_Dexterity;
     }
 
     public void CallBack_Constitution()
     {
         int constitution = Dice_Simulator();
         T_Out_Constitution.text = constitution.ToString();
-        int mod_Constitution = constitution + 2;
+        mod_Constitution = constitution + 2;
         T_Out_Mod_Con.text = mod_Constitution.ToString();
+        Singleton.Instance.constitutionVal = mod_Constitution;
     }
 
     public void CallBack_Intelligence()
     {
         int intelligence = Dice_Simulator();
         T_Out_Intelligence.text = intelligence.ToString();
-        int mod_Intelligence = intelligence + 2;
+        mod_Intelligence = intelligence + 2;
         T_Out_Mod_Int.text = mod_Intelligence.ToString();
+        Singleton.Instance.intelligenceVal = mod_Intelligence;
     }
 
     public void CallBack_Wisdom()
     {
         int wisdom = Dice_Simulator();
         T_Out_Wisdom.text = wisdom.ToString();
-        int mod_Wisdom = wisdom + 2;
+        mod_Wisdom = wisdom + 2;
         T_Out_Mod_Wis.text = mod_Wisdom.ToString();
+        Singleton.Instance.wisdomVal = mod_Wisdom;
     }
 
     public void CallBack_Charisma()
     {
         int charisma = Dice_Simulator();
         T_Out_Charisma.text = charisma.ToString();
-        int mod_Charisma = charisma + 2;
+        mod_Charisma = charisma + 2;
         T_Out_Mod_Cha.text = mod_Charisma.ToString();
+        Singleton.Instance.charismaVal = mod_Charisma;
     }
 
         public void QuitGame()
@@ -192,4 +215,6 @@ public class UI_Manager : MonoBehaviour
 #endif
         Application.Quit();
     }
+
+
 }
