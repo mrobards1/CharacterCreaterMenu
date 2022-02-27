@@ -1,22 +1,70 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-[System.Serializable]
-public class UI_Manager : MonoBehaviour
+public class PlayerData
 {
-    
+    public string Player_Name;
+    public string Ability_Strength;
+    public string Ability_Dexterity;
+    public string Ability_Constitution;
+    public string Ability_Intelligence;
+    public string Ability_Wisdom;
+    public string Ability_Charisma;
+    public string Walking_Speed;
+    public string Running_Speed;
+    public string Jump_Height;
+    public string Class;
+    public string Race;
+    public string Current_XP;
+    public string Max_XP;
+    public string Current_HP;
+    public string Max_HP;
+    public string Alignment;
+    public string ArmorClass;
+    public string ItemList;
 
-    private Button Button_Quit;
+}
+
+[System.Serializable]
+public class UI_Controller : MonoBehaviour
+{
+
+
+    // Get references to your UI objects
     private InputField CharacterNameInput;
     private InputField Alignment_Input;
+   
     private InputField Armor_Class_Input;
-
+    
     private InputField Item_List_Input;
 
-    
+    private Text T_Out_Strength;
+    private Button Button_Strength_Roll;
+    private Text T_Out_Mod_Str;
+
+    private Text T_Out_Dexterity;
+    private Button Button_Dexterity_Roll;
+    private Text T_Out_Mod_Dex;
+
+    private Text T_Out_Constitution;
+    private Button Button_Constitution_Roll;
+    private Text T_Out_Mod_Con;
+
+    private Text T_Out_Intelligence;
+    private Button Button_Intelligence_Roll;
+    private Text T_Out_Mod_Int;
+
+    private Text T_Out_Wisdom;
+    private Button Button_Wisdom_Roll;
+    private Text T_Out_Mod_Wis;
+
+    private Text T_Out_Charisma;
+    private Button Button_Charisma_Roll;
+    private Text T_Out_Mod_Cha;
 
     private Text Walking_Val;
     private Slider Slider_Walking;
@@ -43,31 +91,8 @@ public class UI_Manager : MonoBehaviour
     private Text Text_Json_Output;
 
     private Button Exit_Button;
+    public List<string> dates = new List<string>();
 
-
-    private Text T_Out_Strength;
-    private Button Button_Strength_Roll;
-    private Text T_Out_Mod_Str;
-
-    private Text T_Out_Dexterity;
-    private Button Button_Dexterity_Roll;
-    private Text T_Out_Mod_Dex;
-
-    private Text T_Out_Constitution;
-    private Button Button_Constitution_Roll;
-    private Text T_Out_Mod_Con;
-
-    private Text T_Out_Intelligence;
-    private Button Button_Intelligence_Roll;
-    private Text T_Out_Mod_Int;
-
-    private Text T_Out_Wisdom;
-    private Button Button_Wisdom_Roll;
-    private Text T_Out_Mod_Wis;
-
-    private Text T_Out_Charisma;
-    private Button Button_Charisma_Roll;
-    private Text T_Out_Mod_Cha;
 
     public string SaveToJSon()
     {
@@ -97,61 +122,41 @@ public class UI_Manager : MonoBehaviour
 
     }
 
-    public class PlayerData
-    {
-        public string Player_Name;
 
-        public string Ability_Strength;
-        public string Ability_Dexterity;
-        public string Ability_Constitution;
-        public string Ability_Intelligence;
-        public string Ability_Wisdom;
-        public string Ability_Charisma;
-        public string Walking_Speed;
-        public string Running_Speed;
-        public string Jump_Height;
-        public string Class;
-        public string Race;
-        public string Current_XP;
-        public string Max_XP;
-        public string Current_HP;
-        public string Max_HP;
-        public string Alignment;
-        public string ArmorClass;
-        public string ItemList;
 
-    }
 
-    public void Start()
+
+    void Start()
     {
         UIReferences();
-        
     }
 
-
-
-    
-    public void UIReferences()
+    private void UIReferences()
     {
+
         CharacterNameInput = GameObject.Find("CharacterNameInput").GetComponent<InputField>();
+        CharacterNameInput.onEndEdit.AddListener(CharacterName);
+
 
         Alignment_Input = GameObject.Find("Alignment_Input").GetComponent<InputField>();
+        Alignment_Input.onEndEdit.AddListener(CallBack_Alignment);
 
         Item_List_Input = GameObject.Find("Item_List_Input").GetComponent<InputField>();
+        Item_List_Input.onEndEdit.AddListener(CallBack_Item_List);
 
         Armor_Class_Input = GameObject.Find("Armor_Class_Input").GetComponent<InputField>();
         Armor_Class_Input.onEndEdit.AddListener(CallBack_Armor_Class);
+
+
         T_Out_Strength = GameObject.Find("T_Out_Strength").GetComponent<Text>();
         Button_Strength_Roll = GameObject.Find("Button_Strength_Roll").GetComponent<Button>();
         T_Out_Mod_Str = GameObject.Find("T_Out_Mod_Str").GetComponent<Text>();
         Button_Strength_Roll.onClick.AddListener(CallBack_Strength);
-        
 
         T_Out_Dexterity = GameObject.Find("T_Out_Dexterity").GetComponent<Text>();
         Button_Dexterity_Roll = GameObject.Find("Button_Dexterity_Roll").GetComponent<Button>();
         Button_Dexterity_Roll.onClick.AddListener(CallBack_Dexterity);
         T_Out_Mod_Dex = GameObject.Find("T_Out_Mod_Dex").GetComponent<Text>();
-        
 
         T_Out_Constitution = GameObject.Find("T_Out_Constitution").GetComponent<Text>();
         Button_Constitution_Roll = GameObject.Find("Button_Constitution_Roll").GetComponent<Button>();
@@ -172,9 +177,6 @@ public class UI_Manager : MonoBehaviour
         Button_Charisma_Roll = GameObject.Find("Button_Charisma_Roll").GetComponent<Button>();
         Button_Charisma_Roll.onClick.AddListener(CallBack_Charisma);
         T_Out_Mod_Cha = GameObject.Find("T_Out_Mod_Cha").GetComponent<Text>();
-
-        Button_Quit = GameObject.Find("Button_Quit").GetComponent<Button>();
-        Button_Quit.onClick.AddListener(QuitGame);
 
         Walking_Val = GameObject.Find("Walking_Val").GetComponent<Text>();
         Slider_Walking = GameObject.Find("Slider_Walking").GetComponent<Slider>();
@@ -217,11 +219,10 @@ public class UI_Manager : MonoBehaviour
 
     }
 
-   public void SceneSwitch(int sceneNum)
+    public void SceneSwitch(int sceneNum)
     {
         SceneManager.LoadScene(sceneNum);
     }
-
 
     int Dice_Simulator()
     {
@@ -275,6 +276,35 @@ public class UI_Manager : MonoBehaviour
 
     }
 
+
+    public void CharacterName(string characterName)
+    {
+        Singleton.Instance.characterName = characterName;
+        Debug.Log("Callback_Race was called");
+    }
+
+
+    public void CallBack_Race(int Race)
+    {
+        Race_Val.text = Race.ToString();
+        Debug.Log("Callback_Race was called");
+        Singleton.Instance.race = Race;
+
+    }
+
+    public void CallBack_Class(int Class)
+    {
+        Class_Val.text = Class.ToString();
+        Debug.Log("Callback_Class was called");
+        Singleton.Instance.characterClass = Class;
+    }
+
+    public void CallBack_Alignment(string alignment)
+    {
+        Singleton.Instance.alignment = alignment;
+        Debug.Log("Callback_Race was called");
+    }
+
     public void CallBack_Strength()
     {
         int strength = Dice_Simulator();
@@ -283,9 +313,6 @@ public class UI_Manager : MonoBehaviour
         T_Out_Mod_Str.text = mod_Strength.ToString();
         Singleton.Instance.strengthVal = mod_Strength;
     }
-
-    
-   
 
     public void CallBack_Dexterity()
     {
@@ -332,84 +359,75 @@ public class UI_Manager : MonoBehaviour
         Singleton.Instance.charismaVal = mod_Charisma;
     }
 
-    public void CharacterName()
-    {
-        Debug.Log("Callback_Race was called");
-    }
-
-
-    public void CallBack_Race(int Race)
-    {
-        Race_Val.text = Race.ToString();
-        Debug.Log("Callback_Race was called");
-
-    }
-
-    public void CallBack_Class(int Class)
-    {
-        Class_Val.text = Class.ToString();
-        Debug.Log("Callback_Class was called");
-    }
-
-
     public void CallBack_Walking_Slider(float Slider_Walking)
     {
         Walking_Val.text = Slider_Walking.ToString();
+        Singleton.Instance.walkingSpeed = Slider_Walking;
     }
 
     public void CallBack_Running_Slider(float Slider_Running)
     {
         Running_Val.text = Slider_Running.ToString();
+        Singleton.Instance.runningSpeed = Slider_Running;
     }
 
     public void CallBack_Jump_Height_Slider(float Slider_Jump_Height)
     {
         Jump_Height_Val.text = Slider_Jump_Height.ToString();
+        Singleton.Instance.jumpHeight = Slider_Jump_Height;
     }
 
     public void CallBack_Current_XP(string Current_XP_Input)
     {
+        Singleton.Instance.currentXP = Current_XP_Input;
         Debug.Log("Callback_Current_XP was called");
     }
 
     public void CallBack_Max_XP(string Max_XP_Input)
     {
+        Singleton.Instance.maxXP = Max_XP_Input;
         Debug.Log("Callback_Max_XP was called");
     }
 
     public void CallBack_Current_HP(string Current_HP_Input)
     {
+        Singleton.Instance.currentHP = Current_HP_Input;
         Debug.Log("Callback_Current_HP was called");
     }
 
     public void CallBack_Max_HP(string Max_HP_Input)
     {
+        Singleton.Instance.maxHP = Max_HP_Input;
         Debug.Log("Callback_Max_HP was called");
     }
 
     public void CallBack_Armor_Class(string Armor_Class_Input)
     {
+        if (int.Parse(Armor_Class_Input.ToString()) > 100)
+        {
+            Armor_Class_Input = "100";
+        }
+        else if (int.Parse(Armor_Class_Input.ToString()) < 0)
+        {
+            Armor_Class_Input = "0";
+        }
+        Singleton.Instance.armorClass = Armor_Class_Input;
         Debug.Log("Callback_Max_HP was called");
     }
 
+    public void CallBack_Item_List(string item_list)
+    {
+        Singleton.Instance.itemList = item_list;
+        Debug.Log("CallBack_Item_List was called");
+    }
 
     public void CallBack_Json_Output()
     {
         Text_Json_Output.text = SaveToJSon();
     }
 
-    public void CallBack_SetClassNum()
-    {
-        if (int.Parse(Armor_Class_Input.text.ToString()) > 100)
-        {
-            Armor_Class_Input.text = "100";
-        }
-        else if (int.Parse(Armor_Class_Input.text.ToString()) < 0)
-        {
-            Armor_Class_Input.text = "0";
-        }
-    }
     
+
     public void QuitGame()
     {
 #if UNITY_EDITOR

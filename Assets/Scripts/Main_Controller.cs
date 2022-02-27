@@ -5,36 +5,41 @@ using UnityEngine.UI;
 
 public class Main_Controller : MonoBehaviour
 {
-    public Button playButton;
+   
 
-    public bool isFilledOut()
+   
+
+    public void Update()
     {
-        
+        isFilled();
+        toggleButton();
+    }
+
+    public void isFilled()
+    {
         if ((Singleton.Instance.strengthVal != 0) && (Singleton.Instance.dexterityVal != 0) && (Singleton.Instance.constitutionVal != 0)
-            && (Singleton.Instance.intelligenceVal != 0) && (Singleton.Instance.wisdomVal != 0) && (Singleton.Instance.charismaVal != 0))
+            && (Singleton.Instance.intelligenceVal != 0) && (Singleton.Instance.wisdomVal != 0) && (Singleton.Instance.charismaVal != 0)
+            && (!string.IsNullOrEmpty(Singleton.Instance.characterName)) && (Singleton.Instance.walkingSpeed != 0) && (Singleton.Instance.runningSpeed != 0)
+            && (Singleton.Instance.jumpHeight != 0) && (Singleton.Instance.characterClass != 0) && (Singleton.Instance.race != 0) && (!string.IsNullOrEmpty(Singleton.Instance.currentXP))
+            && (!string.IsNullOrEmpty(Singleton.Instance.maxXP)) && (!string.IsNullOrEmpty(Singleton.Instance.currentHP)) && (!string.IsNullOrEmpty(Singleton.Instance.maxHP))
+            && (!string.IsNullOrEmpty(Singleton.Instance.alignment)) && (!string.IsNullOrEmpty(Singleton.Instance.armorClass)) && (!string.IsNullOrEmpty(Singleton.Instance.itemList)))
         {
-            return true;
+            Singleton.Instance.isFilledOut = true;
         }
-        return false;
-        
-    }
-
-    private void Start()
-    {
-        
-        
-    }
-
-    public void Pressable()
-    {
-        if (isFilledOut() == true)
+        else
         {
-            playButton.interactable = true;
+            Singleton.Instance.isFilledOut = false;
         }
     }
 
-    private void Update()
+    public void toggleButton()
     {
-        print(isFilledOut());
+        Button Button_Play = GameObject.Find("Button_Play").GetComponent<Button>();
+        if (Singleton.Instance.isFilledOut == true)
+        {
+            Button_Play.interactable = true;
+        }
+       
     }
+
 }
